@@ -1,0 +1,33 @@
+<configuration debug="true">
+
+    <!-- 控制台日志输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 自定义BLS日志推送 -->
+    <appender name="BLS" class="com.megadotnet.logging.ext.BLSLogbackAppender">
+        <!-- 通过系统属性传递配置 -->
+        <endpoint>${logging.bls.endpoint}</endpoint>
+        <logstoreName>${logging.bls.logstore}</logstoreName>
+    </appender>
+
+    <!-- 新增的包日志级别配置 -->
+    <logger name="io.modelcontextprotocol.client" level="INFO"/>
+    <logger name="io.modelcontextprotocol.spec" level="INFO"/>
+
+    <!-- 本地包日志配置 -->
+    <logger name="com.aitools.mcp" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="BLS"/>
+    </logger>
+
+    <!-- 根日志配置 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="BLS"/>
+    </root>
+
+</configuration>
